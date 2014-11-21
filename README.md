@@ -1,4 +1,4 @@
-sparql4py
+eunomia
 =========
 
 In progress.
