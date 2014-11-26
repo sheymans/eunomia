@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
 # We need the tokens from the lexer (required)
-from lexer import tokens, Lexer
+import lexer 
 
 from models import Term, Atom, Rule, Program
 
@@ -26,7 +26,7 @@ class Parser():
         start is the start symbol of the grammar, by default it is just the
         top level goal.
         """
-        self.tokens = tokens # this is required
+        self.tokens = lexer.tokens # this is required
         self.log = logging.getLogger()
         if start:
             # We'll not write tables when we specified a start symbol, this
@@ -39,9 +39,9 @@ class Parser():
 
     def parse(self, input):
         # input is the program input (a string)
-        lexer = Lexer()
+        lex = lexer.Lexer()
         # This returns a eunomia.models.Program
-        return self.parser.parse(input, lexer)
+        return self.parser.parse(input, lex)
 
     def p_atom(self, p):
         """
