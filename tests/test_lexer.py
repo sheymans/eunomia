@@ -45,3 +45,8 @@ class TestLexer(unittest.TestCase):
         self.assertEqual(tok3.type, 'VAR')
         self.assertEqual(tok3.value, "?xa")
 
+    def test_illegal_character(self):
+        self.lexer.input("$")
+        tok = self.lexer.token()
+        self.assertFalse(tok)
+

@@ -30,4 +30,8 @@ def Lexer():
 
     t_ignore  = ' \t\n'
 
+    # Error handling rule; this needs to be present for ply
+    def t_error(t):
+        t.lexer.skip(1)
+
     return lex.lex()
