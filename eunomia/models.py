@@ -13,6 +13,12 @@ class Program(object):
     def __str__(self):
         return "\n".join([str(rule) for rule in self.orig_program])
 
+    def __eq__(self, other): 
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other): 
+        return not self == other
+
 class Rule(object):
     """
     A Rule consists of a head atom and a possibly empty list of body atoms
@@ -29,6 +35,12 @@ class Rule(object):
             result += " :- "
             result += ", ".join([str(atom) for atom in self.body])
         return result + "."
+
+    def __eq__(self, other): 
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other): 
+        return not self == other
 
 class Atom(object):
     """
@@ -48,6 +60,12 @@ class Atom(object):
             result += ", ".join([str(term) for term in self.args])
         return result + ")"
 
+    def __eq__(self, other): 
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other): 
+        return not self == other
+
 class Term(object):
     """
     A Term is a variable or a constant.
@@ -60,3 +78,9 @@ class Term(object):
 
     def __str__(self):
         return str(self.value)
+
+    def __eq__(self, other): 
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other): 
+        return not self == other
