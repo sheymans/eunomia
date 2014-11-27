@@ -5,13 +5,13 @@ class Program(object):
     """
     def __init__(self):
         # The original program is a list of rules
-        self.orig_program = []
+        self.rules = []
     
     def add_rule(self, rule):
-        self.orig_program.append(rule)
+        self.rules.append(rule)
 
     def __str__(self):
-        return "\n".join([str(rule) for rule in self.orig_program])
+        return "\n".join([str(rule) for rule in self.rules])
 
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__

@@ -43,6 +43,51 @@ class Parser():
         # This returns a eunomia.models.Program
         return self.parser.parse(input, lex)
 
+
+    ## The Grammar
+
+    def p_program(self, p):
+        """
+        program : rules
+        """
+        p[0] = Program()
+        for rule in p[1]:
+            p[0].add_rule(rule)
+
+    def p_rules(self, p):
+        """
+        rules : rules rule
+              | rule
+        """
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1]
+            p[0].append(p[2])
+
+    def p_rule(self, p):
+        """
+        rule : atom IF atoms DOT
+        """
+        p[0] = Rule(p[1], p[3])
+
+    def p_rule_fact(self, p):
+        """
+        rule : atom DOT
+        """
+        p[0] = Rule(p[1], [])
+
+    def p_atoms(self, p):
+        """
+        atoms : atoms COMMA atom
+              | atom
+        """
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1]
+            p[0].append(p[3])
+
     def p_atom(self, p):
         """
         atom : term LPAREN terms RPAREN

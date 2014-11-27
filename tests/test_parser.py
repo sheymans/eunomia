@@ -35,3 +35,48 @@ class TestParser(unittest.TestCase):
         self.assertEqual(result1.predicate, Term("p"))
         self.assertEqual(result1.args, [Term("a"), Term("b")])
 
+    def test_parse_atoms(self):
+        self.parser = Parser('atoms')
+        result1 = self.parser.parse("p(a, b), q(c,d)")
+        self.assertEqual(str(result1[0]), "p(a, b)")
+        self.assertEqual(str(result1[1]), "q(c, d)")
+
+    def test_parse_rule_fact(self):
+        self.parser = Parser('rule')
+        result1 = self.parser.parse("p(a, b).")
+        self.assertEqual(type(result1), Rule)
+        self.assertEqual(str(result1.head), "p(a, b)")
+        self.assertEqual(result1.body, [])
+
+    def test_parse_rule(self):
+        self.parser = Parser('rule')
+        result1 = self.parser.parse("p(a, b) :- q(c,d), r(e,f).")
+        self.assertEqual(type(result1), Rule)
+        self.assertEqual(str(result1.head), "p(a, b)")
+        self.assertEqual(str(result1), "p(a, b) :- q(c, d), r(e, f).") 
+        self.assertEqual(len(result1.body), 2)
+
+    def test_parse_rules(self):
+        self.parser = Parser('rules')
+        result1 = self.parser.parse("p(a, b) :- q(c,d), r(e,f). p(c,d).")
+        self.assertEqual(len(result1), 2)
+        for rule in result1:
+            self.assertEqual(type(rule), Rule)
+
+        self.assertEqual(str(result1[0]), "p(a, b) :- q(c, d), r(e, f).") 
+        self.assertEqual(str(result1[1]), "p(c, d).") 
+
+    def test_parse_program(self):
+        self.parser = Parser('program')
+        result1 = self.parser.parse("p(a, b) :- q(c,d), r(e,f). p(c,d).")
+        self.assertEqual(type(result1), Program)
+        for rule in result1.rules:
+            self.assertEqual(type(rule), Rule)
+
+        self.assertEqual(str(result1.rules[0]), "p(a, b) :- q(c, d), r(e, f).") 
+        self.assertEqual(str(result1.rules[1]), "p(c, d).") 
+
+
+
+
+
