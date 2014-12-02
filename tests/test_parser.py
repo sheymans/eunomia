@@ -1,9 +1,17 @@
 import unittest
 from eunomia.parser import Parser
 from eunomia.models import Term, Atom, Rule, Program
+import os
 
 class TestParser(unittest.TestCase):
     
+    def setUp(self):
+        if os.path.isfile('parser.out'):
+            os.remove('parser.out')
+        if os.path.isfile('parsetab.py'):
+            os.remove('parsetab.py')
+        if os.path.isfile('parsetab.pyc'):
+            os.remove('parsetab.pyc')
 
     def test_parse_term_constant(self):
         self.parser = Parser('term')
