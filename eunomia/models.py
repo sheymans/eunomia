@@ -4,14 +4,20 @@ class Program(object):
     A Program keeps a list of its rules.
     """
     def __init__(self):
-        # The original program is a list of rules
+        # The original program is a list of rules and a list of facts
         self.rules = []
+        self.facts = []
     
     def add_rule(self, rule):
         self.rules.append(rule)
 
+    def add_fact(self, fact):
+        self.facts.append(fact)
+
     def __str__(self):
-        return "\n".join([str(rule) for rule in self.rules])
+        rules = "\n".join([str(rule) for rule in self.rules])
+        facts = "\n".join([str(fact) for fact in self.facts])
+        return rules + facts
 
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__

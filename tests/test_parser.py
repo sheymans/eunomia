@@ -82,7 +82,18 @@ class TestParser(unittest.TestCase):
             self.assertEqual(type(rule), Rule)
 
         self.assertEqual(str(result1.rules[0]), "p(a, b) :- q(c, d), r(e, f).") 
-        self.assertEqual(str(result1.rules[1]), "p(c, d).") 
+        self.assertEqual(str(result1.facts[0]), "p(c, d).") 
+
+    def test_parse_program_fact(self):
+        self.parser = Parser('program')
+        result1 = self.parser.parse("p(a, b).")
+        self.assertEqual(type(result1), Program)
+        self.assertFalse(result1.rules)
+        self.assertTrue(result1.facts)
+        for fact in result1.facts:
+            self.assertEqual(type(fact), Rule)
+
+        self.assertEqual(str(result1.facts[0]), "p(a, b).") 
 
 
 

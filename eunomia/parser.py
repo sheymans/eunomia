@@ -52,7 +52,10 @@ class Parser():
         """
         p[0] = Program()
         for rule in p[1]:
-            p[0].add_rule(rule)
+            if rule.body:
+                p[0].add_rule(rule)
+            else:
+                p[0].add_fact(rule)
 
     def p_rules(self, p):
         """
