@@ -1,4 +1,4 @@
-import utils
+import eunomia.utils
 
 class AtomIndex(object):
     """
@@ -55,7 +55,7 @@ class AtomIndex(object):
                 return dic
         values = traverse(self.index)
         # values may contain duplicates. Just create a dict of hashes
-        return utils.uniqify(values)
+        return eunomia.utils.uniqify(values)
 
     ## Private functions
     def __add_args(self, dic, args, value):
