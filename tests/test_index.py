@@ -95,7 +95,7 @@ class TestIndex(unittest.TestCase):
         at3 = Atom(Term("p"), [Term("a"), Term("c", False)])
         ind.add(at2, "random") 
         ind.add(at3, "random2") 
-        self.assertItemsEqual(ind.get_more_specific_matches(at), ["random", "random2"])
+        self.assertEqual(ind.get_more_specific_matches(at), ["random2", "random"])
 
         at4 = Atom(Term("q"), [Term("a"), Term("b", False)])
         self.assertEqual(ind.get_more_specific_matches(at4), [])
@@ -106,7 +106,7 @@ class TestIndex(unittest.TestCase):
         at2 = Atom(Term("p"), [Term("a"), Term("b", False)])
         at3 = Atom(Term("p"), [Term("a"), Term("c", False)])
         ind.add(at2, "random") 
-        self.assertItemsEqual(ind.get_more_specific_matches(at3), [])
+        self.assertEqual(ind.get_more_specific_matches(at3), [])
 
     def test_get_all_values(self):
         ind = AtomIndex()
@@ -116,12 +116,12 @@ class TestIndex(unittest.TestCase):
         ind.add(at, Term("random")) 
         ind.add(at2, Term("random2")) 
         ind.add(at3, Term("random3")) 
-        self.assertItemsEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
+        self.assertEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
 
         # now add duplicate
         ind.add(at3, Term("random3")) 
         # result should be the same:
-        self.assertItemsEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
+        self.assertEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
 
 
     def test_add_rule(self):
