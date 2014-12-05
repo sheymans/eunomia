@@ -42,7 +42,7 @@ class Rule(object):
         # Assumption we only ask this rules that resulted from proper datalog
         # resolution (those heads will always be ground, by safeness)
         # If that is not guaranteed we need a groundness check here.
-        return not body
+        return not self.body
 
 
     def resolve(self, idx, mapping):
@@ -145,7 +145,7 @@ class Term(object):
             if self.value in mapping:
                 # the mapping is always from variables to constant so the new
                 # term is a constant
-                new_term = Term(mapping[self.value])
+                new_term = Term(mapping[self.value].value)
             else:
                 new_term = Term(self.value, self.is_var)
         else:
