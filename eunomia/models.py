@@ -60,6 +60,27 @@ class Atom(object):
         self.predicate = predicate
         self.args = args
 
+    def unify_with_ground(self, atom):
+        """
+        Try to unify this atom with another ground atom.
+        Assumptions: (as we are not checking on it for speed)
+            1. atom is indeed a ground atom.
+            2. the predicates already match (we picked this atom and the atom up from indices that have to guarantee that).
+            3. the constants on same argument positions already match
+            4. the atoms have the same arity
+        """
+        mapping = {}
+        for idx, a  in enumerate(self.args):
+            if a.is_var:
+                if a.value not in mapping:
+                    mapping[a.value] = atom.args[idx] 
+                elif mapping[a.value] != atom.args[idx]:
+                    return False
+                # else just skip
+        # Return a mapping from values to terms.
+        return mapping
+
+
     def __str__(self):
         result = str(self.predicate) + "("
         if self.args:

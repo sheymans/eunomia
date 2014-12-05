@@ -63,5 +63,68 @@ class TestModels(unittest.TestCase):
 
         self.assertEqual(str(program), "p(a) :- p(a, ?x), q(b, ?y).\np(a) :- p(a, ?x).\np(a).")
 
+    def test_unify_with_ground(self):
+        predicate1 = Term("p")
+        constant1 = Term("a")
+        var1 = Term("?x", True)
+        atom1 = Atom(predicate1, [ constant1, var1 ])
 
- 
+        predicate2 = Term("p")
+        constant2 = Term("a")
+        constant3 = Term("c", True)
+        atom2 = Atom(predicate2, [ constant2, constant3 ])
+
+        mapping = atom1.unify_with_ground(atom2)
+        self.assertEqual(len(mapping), 1)
+        self.assertEqual(mapping['?x'].value, 'c') 
+
+        atom3 = Atom(predicate2, [ var1, var1 ])
+
+        mapping = atom3.unify_with_ground(atom2)
+        self.assertFalse(mapping)
+
+        atom4 = Atom(predicate2, [ constant1, constant1 ])
+        mapping = atom3.unify_with_ground(atom4)
+        self.assertEqual(len(mapping), 1)
+        self.assertEqual(mapping['?x'].value, 'a') 
+
+
+        var2 = Term("?y", True)
+        atom5 = Atom(predicate1, [ var1, var2 ])
+        mapping = atom5.unify_with_ground(atom2)
+        self.assertEqual(len(mapping), 2)
+        self.assertEqual(mapping['?x'].value, 'a') 
+        self.assertEqual(mapping['?y'].value, 'c') 
+
+
+        #for key in mapping:
+        #    print "mapping ", key, " to ", mapping[key]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
