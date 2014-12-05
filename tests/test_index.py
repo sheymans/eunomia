@@ -117,12 +117,12 @@ class TestIndex(unittest.TestCase):
         ind.add(at, Term("random")) 
         ind.add(at2, Term("random2")) 
         ind.add(at3, Term("random3")) 
-        self.assertEqual(list(map(lambda x: x.value, ind.get_all_values())), ["random", "random2", "random3"])
+        self.assertEqual(set(map(lambda x: x.value, ind.get_all_values())), set(["random", "random2", "random3"]))
 
         # now add duplicate
         ind.add(at3, Term("random3")) 
         # result should be the same:
-        self.assertEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
+        self.assertEqual(set(map(lambda x: x.value, ind.get_all_values())), set(["random", "random2", "random3"]))
 
 
     def test_add_rule(self):
@@ -180,7 +180,7 @@ class TestIndex(unittest.TestCase):
         ind.add_fact(at2)
         ind.add_fact(at3)
 
-        self.assertEqual(ind.get_all_facts(), [at2, at3])
+        self.assertEqual(set(ind.get_all_facts()), set([at2, at3]))
     
 
 
