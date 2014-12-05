@@ -95,7 +95,8 @@ class TestIndex(unittest.TestCase):
         at3 = Atom(Term("p"), [Term("a"), Term("c", False)])
         ind.add(at2, "random") 
         ind.add(at3, "random2") 
-        self.assertEqual(ind.get_more_specific_matches(at), ["random", "random2"])
+        results = ind.get_more_specific_matches(at)
+        self.assertTrue(set(results) == set(["random2", "random"]))
 
         at4 = Atom(Term("q"), [Term("a"), Term("b", False)])
         self.assertEqual(ind.get_more_specific_matches(at4), [])
