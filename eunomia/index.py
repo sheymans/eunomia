@@ -97,8 +97,10 @@ class AtomIndex(object):
                 return []
             else:
                 return self.__find(dic[key_val], args[1:])
-        else:
+        elif type(dic) == list:
             return dic
+        else:
+            return []
 
     def __find_more_general(self, dic, args):
         """
@@ -125,8 +127,10 @@ class AtomIndex(object):
                 if key_val2 and key_val2 in dic:
                     values2 = self.__find_more_general(dic[key_val2], args[1:])
                 return values1 + values2
-        else:
+        elif type(dic) == list:
             return dic
+        else:
+            return []
 
     def __find_more_specific(self, dic, args):
         """
@@ -151,8 +155,11 @@ class AtomIndex(object):
                     if key != -1: # -1 is var
                         values.extend(self.__find_more_specific(dic[key], args[1:]))
                 return values
-        else:
+
+        elif type(dic) == list:
             return dic
+        else:
+            return []
 
     ## Built-ins
     def __str__(self):

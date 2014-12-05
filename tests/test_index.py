@@ -180,8 +180,20 @@ class TestIndex(unittest.TestCase):
         ind.add_fact(at2)
         ind.add_fact(at3)
 
-        self.assertEqual(set(ind.get_all_facts()), set([at2, at3]))
+        self.assertEqual(set(map(lambda x: x.hash(), ind.get_all_facts())), set([at2.hash(), at3.hash()]))
     
+    def test_print_fact_index(self):
+        at = Atom(Term("p"), [Term("a"), Term("?x", True)])
+        at2 = Atom(Term("p"), [Term("a"), Term("b", False)])
+        at3 = Atom(Term("q"), [Term("a"), Term("c", False)])
+        
+        ind = FactIndex()
+        ind.add_fact(at2)
+        ind.add_fact(at3)
+
+        str(ind)
+
+
 
 
 

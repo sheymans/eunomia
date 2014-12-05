@@ -35,7 +35,7 @@ class Engine(object):
         # After resolution the original rule might now be trying to push a
         # rule that is essentially a fact (empty body)
         if rule.is_fact():
-            self.rule_index.push_fact(rule.head)
+            self.push_fact(rule.head)
         else:
             if not self.__in_register(rule):
                 # it's not seen yet:
@@ -59,7 +59,7 @@ class Engine(object):
             self.push_rules(new_rules)
 
     def push_rules(self, rules):
-        for r in new_rules:
+        for r in rules:
             self.push_rule(r)
 
     def get_facts(self):
@@ -68,7 +68,7 @@ class Engine(object):
     # Private
 
     def __add_register(self, el):
-        self.register[el.hash()]
+        self.register[el.hash()] = 1
 
     def __in_register(self, el):
         return el.hash() in self.register
