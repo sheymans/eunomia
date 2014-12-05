@@ -14,6 +14,9 @@ class Program(object):
     def add_fact(self, fact):
         self.facts.append(fact)
 
+    def hash(self):
+        return hash(str(self))
+
     def __str__(self):
         rules = "\n".join([str(rule) for rule in self.rules])
         facts = "\n".join([str(fact) for fact in self.facts])
@@ -35,6 +38,27 @@ class Rule(object):
         self.head = head
         self.body = body
     
+    def is_fact(self):
+        # Assumption we only ask this rules that resulted from proper datalog
+        # resolution (those heads will always be ground, by safeness)
+        # If that is not guaranteed we need a groundness check here.
+        return not body
+
+
+    def resolve(self, idx, mapping):
+        """
+        We resolve this rule with the mapping of variables to constants.
+        """
+        new_head = self.head.resolve(mapping)
+        new_body = []
+        for i, a in enumerate(self.body):
+            if i != idx:
+                new_body.append(a.resolve(mapping))
+        return Rule(new_head, new_body)
+
+    def hash(self):
+        return hash(str(self))
+
     def __str__(self):
         result = str(self.head)
         if self.body:
@@ -60,6 +84,17 @@ class Atom(object):
         self.predicate = predicate
         self.args = args
 
+    def resolve(self, mapping):
+        """
+        We resolve the atom with the mapping.
+        """
+        new_predicate = self.predicate
+        new_args = []
+        for arg in self.args:
+            new_args.append(arg.resolve(mapping))
+        return Atom(new_predicate, new_args)
+
+
     def unify_with_ground(self, atom):
         """
         Try to unify this atom with another ground atom.
@@ -80,6 +115,8 @@ class Atom(object):
         # Return a mapping from values to terms.
         return mapping
 
+    def hash(self):
+        return hash(str(self))
 
     def __str__(self):
         result = str(self.predicate) + "("
@@ -102,6 +139,17 @@ class Term(object):
         # to be always starting with a '?'
         self.value = value
         self.is_var = is_var
+
+    def resolve(self, mapping):
+        if self.is_var:
+            if self.value in mapping:
+                # the mapping is always from variables to constant so the new
+                # term is a constant
+                new_term = Term(mapping[self.value])
+        return new_term
+
+    def hash(self):
+        return hash(str(self))
 
     def __str__(self):
         return str(self.value)

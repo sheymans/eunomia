@@ -15,11 +15,13 @@ class TestIndex(unittest.TestCase):
         ind.add(at, value2)
         ind.add(at2, value2)
 
-        self.assertEqual(ind.index, {'p': {'a': {-1: ['random', 'random2']}}})
+        # note that the index does not check for membership, we do this at the
+        # Engine level
+        self.assertEqual(ind.index, {'p': {'a': {-1: ['random', 'random2', 'random2']}}})
 
         at3 = Atom(Term("p"), [Term("a"), Term("d")])
         ind.add(at3, value)
-        self.assertEqual(ind.index, {'p': {'a': {'d': ['random'], -1: ['random', 'random2']}}})
+        self.assertEqual(ind.index, {'p': {'a': {'d': ['random'], -1: ['random', 'random2', 'random2']}}})
 
     def test_get_values(self):
         ind = AtomIndex()
@@ -32,8 +34,8 @@ class TestIndex(unittest.TestCase):
         ind.add(at, value2)
         ind.add(at2, value2)
 
-        self.assertEqual(ind.get_values(at), ['random', 'random2'])
-        self.assertEqual(ind.get_values(at2), ['random', 'random2'])
+        self.assertEqual(ind.get_values(at), ['random', 'random2', 'random2'])
+        self.assertEqual(ind.get_values(at2), ['random', 'random2', 'random2'])
 
         at3 = Atom(Term("p"), [Term("a"), Term("d")])
         ind.add(at3, value)

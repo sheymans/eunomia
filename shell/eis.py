@@ -15,7 +15,7 @@ class Eis(cmd.Cmd):
     time = Timer()
 
     # Possible options for SHOW command
-    show_options = [ 'loaded' ]
+    show_options = [ 'loaded', 'inferences' ]
 
     ## Loading files as programs:
 
@@ -44,6 +44,14 @@ class Eis(cmd.Cmd):
         if what:
             if what == "loaded":
                 print self.program
+            elif what == "inferences":
+                if not self.engine:
+                    print "You did not ask to deduce what I know. Try 'build'."
+                else:
+                    facts = self.engine.get_all_facts()
+                    print facts
+                    print "\n"
+                    print "==> ", len(facts), " facts currently known."
             else:
                 print "I don't know what to show. Use <TAB> to see options."
         else:
@@ -58,6 +66,20 @@ class Eis(cmd.Cmd):
                             if f.startswith(text)
                             ]
         return completions
+
+    ## Inferring all you can:
+
+    def do_build(self):
+        """build
+        Given the currently loaded program (rules and facts) infer all facts you can.
+        """
+        with self.time:
+            print "Building model..."
+            self.engine = Engine()
+            print "==> Model built (do 'show inferences' to see all known facts)"
+
+
+
 
     def do_EOF(self, line):
         return True
