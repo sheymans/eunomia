@@ -95,7 +95,7 @@ class TestIndex(unittest.TestCase):
         at3 = Atom(Term("p"), [Term("a"), Term("c", False)])
         ind.add(at2, "random") 
         ind.add(at3, "random2") 
-        self.assertEqual(ind.get_more_specific_matches(at), ["random2", "random"])
+        self.assertEqual(ind.get_more_specific_matches(at), ["random", "random2"])
 
         at4 = Atom(Term("q"), [Term("a"), Term("b", False)])
         self.assertEqual(ind.get_more_specific_matches(at4), [])
@@ -116,7 +116,7 @@ class TestIndex(unittest.TestCase):
         ind.add(at, Term("random")) 
         ind.add(at2, Term("random2")) 
         ind.add(at3, Term("random3")) 
-        self.assertEqual(map(lambda x: x.value, ind.get_all_values()), ["random", "random2", "random3"])
+        self.assertEqual(list(map(lambda x: x.value, ind.get_all_values())), ["random", "random2", "random3"])
 
         # now add duplicate
         ind.add(at3, Term("random3")) 
