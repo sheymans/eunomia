@@ -17,7 +17,7 @@ class AtomIndex(object):
     def get_values(self, atom):
         pred = atom.predicate.value
         if pred not in self.index:
-            return None
+            return []
         else:
             return self.__find(self.index[pred], atom.args)
 
@@ -27,7 +27,7 @@ class AtomIndex(object):
         """
         pred = atom.predicate.value
         if pred not in self.index:
-            return None
+            return []
         else:
             return self.__find_more_general(self.index[pred], atom.args)
 
@@ -37,7 +37,7 @@ class AtomIndex(object):
         """
         pred = atom.predicate.value
         if pred not in self.index:
-            return None
+            return []
         else:
             return self.__find_more_specific(self.index[pred], atom.args)
 
@@ -94,7 +94,7 @@ class AtomIndex(object):
                 key_val = el.value
 
             if key_val not in dic:
-                return None
+                return []
             else:
                 return self.__find(dic[key_val], args[1:])
         else:
@@ -116,10 +116,13 @@ class AtomIndex(object):
                 key_val2 = el.value
             
             if key_val1 not in dic and key_val2 not in dic:
-                return None
+                return []
             else:
-                values1 = self.__find_more_general(dic[key_val1], args[1:])
-                if key_val2:
+                values1 = []
+                values2 = []
+                if key_val1 in dic:
+                    values1 = self.__find_more_general(dic[key_val1], args[1:])
+                if key_val2 and key_val2 in dic:
                     values2 = self.__find_more_general(dic[key_val2], args[1:])
                 return values1 + values2
         else:
@@ -137,7 +140,7 @@ class AtomIndex(object):
                 key_val = el.value 
                 
             if key_val and key_val not in dic:
-                return None
+                return []
             elif key_val and key_val in dic:
                 return self.__find_more_specific(dic[key_val], args[1:])
 
@@ -145,13 +148,11 @@ class AtomIndex(object):
                 # el is a var so all constant keys would be specializations
                 values = []
                 for key in dic:
-                    if not key.is_var:
+                    if key != -1: # -1 is var
                         values.extend(self.__find_more_specific(dic[key], args[1:]))
                 return values
         else:
             return dic
-
-
 
     ## Built-ins
     def __str__(self):
@@ -185,7 +186,7 @@ class RuleIndex(object):
         resolutions = []
         for (idx, rule) in candidate_idx_rule_pairs:
             mapping = rule.body[idx].unify_with_ground(fact)
-            if mapping:
+            if mapping is not False:
                 # resolution applys the mapping and remove the body atom at idx
                 new_rule = rule.resolve(idx, mapping)
                 # we could optimize here by pushing immediately for resolution
@@ -218,12 +219,12 @@ class FactIndex(object):
 
             for cand in candidates:
                 mapping = body_atom.unify_with_ground(cand)
-                if mapping:
+                if mapping is not False:
                     new_rule = rule.resolve(idx, mapping)
                 resolutions.append(new_rule)
         return resolutions
 
-    def get_all_facts(self, rule):
+    def get_all_facts(self):
         """
         Get all facts currently known to fact index.
         """

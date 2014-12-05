@@ -146,6 +146,11 @@ class Term(object):
                 # the mapping is always from variables to constant so the new
                 # term is a constant
                 new_term = Term(mapping[self.value])
+            else:
+                new_term = Term(self.value, self.is_var)
+        else:
+            # create a new term with the same value (a copy)
+            new_term = Term(self.value)
         return new_term
 
     def hash(self):
