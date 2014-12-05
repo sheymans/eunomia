@@ -125,5 +125,5 @@ class Parser():
         p[0] = Term(p[1])
 
     def p_error(self, p):
-        raise SyntaxError('Syntax error in input: %s' % p)
+        raise SyntaxError('Syntax error in input: %s' % p) # pragma: no cover
 

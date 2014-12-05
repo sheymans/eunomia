@@ -43,6 +43,16 @@ class TestParser(unittest.TestCase):
         self.assertEqual(result1.predicate, Term("p"))
         self.assertEqual(result1.args, [Term("a"), Term("b")])
 
+    def test_parse_atom3(self):
+        # empty args
+        self.parser = Parser('atom')
+        result1 = self.parser.parse("p()")
+        self.assertEqual(str(result1), "p()")
+        self.assertEqual(type(result1), Atom)
+        self.assertEqual(result1.predicate, Term("p"))
+        self.assertEqual(result1.args, [])
+
+
     def test_parse_atoms(self):
         self.parser = Parser('atoms')
         result1 = self.parser.parse("p(a, b), q(c,d)")
