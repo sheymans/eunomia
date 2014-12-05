@@ -1,5 +1,5 @@
-from index import FactIndex, RuleIndex
-from models import Program, Rule, Atom, Term
+from eunomia.index import FactIndex, RuleIndex
+from eunomia.models import Program, Rule, Atom, Term
 
 class Engine(object):
     
