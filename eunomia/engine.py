@@ -19,17 +19,11 @@ class Engine(object):
         # existence fast.
         self.register = {}
 
-        # Now add rules to index
-        for rule in self.program.rules:
-            # push rule (add to rule index, resolve against any facts, add new
-            # rules)
-            self.push_rule(rule)
+        # Now add rules to index and resolve
+        self.push_rules(self.program.rules)
 
         # Now add the base facts to the indices
-        for fact in self.program.facts:
-            # push this fact through (add to fact index, resolve against all matching rules,
-            # deduce new facts).
-            self.push_fact(fact)
+        self.push_facts(self.program.facts)
 
     def push_rule(self, rule):
         # After resolution the original rule might now be trying to push a
@@ -61,6 +55,10 @@ class Engine(object):
     def push_rules(self, rules):
         for r in rules:
             self.push_rule(r)
+
+    def push_facts(self, facts):
+        for f in facts:
+            self.push_fact(f)
 
     def get_facts(self):
         return self.fact_index.get_all_facts()

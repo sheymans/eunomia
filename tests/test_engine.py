@@ -19,15 +19,16 @@ class TestEngine(unittest.TestCase):
 
         rule1 = Rule(head, [atom1, atom2])
         rule2 = Rule(head, [atom1])
-        fact = Rule(head, [])
 
         program = Program()
         program.add_rule(rule1)
         program.add_rule(rule2)
-        program.add_rule(fact)
+        program.add_fact(head)
 
         engine = Engine(program)
 
         self.assertEqual(engine.program, program)
+        self.assertEqual(set(engine.get_facts()), set([head]) )
+
 
 
