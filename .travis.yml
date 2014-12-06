@@ -5,6 +5,11 @@ python:
     - "3.3"
     - "3.4"
 # command to install dependencies
-install: "pip install -r requirements.txt"
+install:
+    - pip install -r requirements.txt
+    - pip install python-coveralls
 # command to run tests
-script: python -m unittest discover -v test*
+script:
+    - nosetests --with-coverage --cover-package=eunomia
+after_success:
+    - coveralls
