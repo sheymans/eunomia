@@ -1,5 +1,6 @@
 import cmd
 from eunomia.parser import Parser
+import eunomia.utils
 from timer import Timer
 import os
 
@@ -24,12 +25,9 @@ class Eis(cmd.Cmd):
         Load the program that you want to use."""
         with self.time:
             if filename:
-                if os.path.isfile(filename):
-                    with open(filename, 'rU') as f:
-                        text = f.read()
-                        parser = Parser()
-                        self.program = parser.parse(text) 
-                        print "==> program loaded."
+                self.program = eunomia.utils.load_program(filename)
+                if self.program:
+                    print "==> program loaded."
                 else:
                     print filename, " does not seem to exist."
             else:

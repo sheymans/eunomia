@@ -1,6 +1,7 @@
 import unittest
 from eunomia.models import Program, Rule, Atom, Term
 from eunomia.engine import Engine
+import eunomia.utils
 
 class TestEngine(unittest.TestCase):
     
@@ -29,6 +30,10 @@ class TestEngine(unittest.TestCase):
 
         self.assertEqual(engine.program, program)
         self.assertEqual(set(map(lambda x: x.hash(), engine.get_facts())), set([head.hash()]) )
+
+    def test_load_program(self):
+        program = eunomia.utils.load_program('examples/path.lp')
+        self.assertTrue(len(program.rules), 2)
 
 
 
