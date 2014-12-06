@@ -28,7 +28,7 @@ class TestEngine(unittest.TestCase):
         engine = Engine(program)
 
         self.assertEqual(engine.program, program)
-        self.assertEqual(set(engine.get_facts()), set([head]) )
+        self.assertEqual(set(map(lambda x: x.hash(), engine.get_facts())), set([head.hash()]) )
 
 
 
