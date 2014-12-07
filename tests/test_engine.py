@@ -4,7 +4,10 @@ from eunomia.engine import Engine
 import eunomia.utils
 
 class TestEngine(unittest.TestCase):
-    
+
+    def setUp(self):
+        eunomia.utils.clear_tmp_parse_files()
+
     def test_engine_init(self):
         predicate1 = Term("p")
         constant1 = Term("a")

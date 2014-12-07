@@ -19,4 +19,13 @@ def load_program(filename):
             program = parser.parse(text) 
     return program
 
- 
+
+def clear_tmp_parse_files():
+    if os.path.isfile('parser.out'):
+        os.remove('parser.out')
+    if os.path.isfile('parsetab.py'):
+        os.remove('parsetab.py')
+    if os.path.isfile('parsetab.pyc'):
+        os.remove('parsetab.pyc')
+
+
