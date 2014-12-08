@@ -46,8 +46,10 @@ class TestEngine(unittest.TestCase):
 
         self.assertTrue(len(results), 2)
 
-        self.assertEqual(results[0], Atom(Term("path"), [ Term("a"), Term("b")]))
-        self.assertEqual(results[1], Atom(Term("edge"), [ Term("a"), Term("b")]))
+        expected = []
+        expected.append(str(Atom(Term("path"), [ Term("a"), Term("b")])))
+        expected.append(str(Atom(Term("edge"), [ Term("a"), Term("b")])))
+        self.assertEqual(set(map(lambda x: str(x), results)), set(expected))
 
         fact2 = Atom(Term("edge"), [ Term("c"), Term("d")])
 
