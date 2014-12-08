@@ -61,7 +61,7 @@ class TestModels(unittest.TestCase):
         program.add_rule(rule2)
         program.add_rule(fact)
 
-        self.assertEqual(str(program), "p(a) :- p(a, ?x), q(b, ?y).\np(a) :- p(a, ?x).\np(a).")
+        self.assertEqual(str(program), "p(a) :- p(a, ?x), q(b, ?y).\np(a) :- p(a, ?x).\np(a).\n")
 
     def test_unify_with_ground(self):
         predicate1 = Term("p")

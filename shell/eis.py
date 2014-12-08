@@ -1,5 +1,6 @@
 import cmd
 from eunomia.parser import Parser
+from eunomia.engine import Engine
 import eunomia.utils
 from timer import Timer
 import os
@@ -12,6 +13,10 @@ class Eis(cmd.Cmd):
 
     # Store the current Program
     program = None
+
+    # The current engine
+    engine = None
+
     # To time stuff
     time = Timer()
 
@@ -46,10 +51,10 @@ class Eis(cmd.Cmd):
                 if not self.engine:
                     print "You did not ask to deduce what I know. Try 'build'."
                 else:
-                    facts = self.engine.get_all_facts()
-                    print facts
-                    print "\n"
-                    print "==> ", len(facts), " facts currently known."
+                    facts = self.engine.get_facts()
+                    for f in facts:
+                        print f
+                    print "==> ", len(facts), "facts currently known."
             else:
                 print "I don't know what to show. Use <TAB> to see options."
         else:
@@ -65,19 +70,43 @@ class Eis(cmd.Cmd):
                             ]
         return completions
 
+    ## Adding rules or facts
+    def do_add(self, what):
+        """add [rule or fact]
+        \nFor example 'add f(a,b).' for adding a fact or 'add p(?x, ?y) :- q(?y, ?x).' for a rule.
+        """
+        if what:
+            try:
+                p = Parser()
+                new_program = p.parse(what)
+                # Add it to the program and push it to the engine
+                self.program.merge(new_program)
+                
+                # this pushes both facts and rules
+                if self.engine:
+                    with self.time:
+                        self.engine.push_program(new_program)
+
+                print "==> added ", new_program, " and updated known inferences."
+
+            except Exception as e:
+                print "I'm not able to add ", what, " Is it a well-formed fact or rule?\nDetails: ",  e
+        else:
+            print "I don't know what to add. Add a rule or fact."
+
     ## Inferring all you can:
 
-    def do_build(self):
+    def do_build(self, line):
         """build
         Given the currently loaded program (rules and facts) infer all facts you can.
         """
         with self.time:
-            print "Building model..."
-            self.engine = Engine()
-            print "==> Model built (do 'show inferences' to see all known facts)"
-
-
-
+            if not self.program:
+                print "No program was loaded. Try 'load' first."
+            else:
+                print "Building model..."
+                self.engine = Engine(self.program)
+                print "==> Model built (do 'show inferences' to see all known facts)"
 
     def do_EOF(self, line):
         return True

@@ -19,11 +19,8 @@ class Engine(object):
         # existence fast.
         self.register = {}
 
-        # Now add rules to index and resolve
-        self.push_rules(self.program.rules)
-
-        # Now add the base facts to the indices
-        self.push_facts(self.program.facts)
+        # Now add rules and facts to index and resolve
+        self.push_program(self.program)
 
     def push_rule(self, rule):
         # After resolution the original rule might now be trying to push a
@@ -40,6 +37,7 @@ class Engine(object):
                 self.push_rules(new_rules)
 
     def push_fact(self, fact):
+        # fact is assumed to be an atom
         if not self.__in_register(fact):
             # it's not seen yet:
             self.__add_register(fact)
@@ -58,7 +56,11 @@ class Engine(object):
 
     def push_facts(self, facts):
         for f in facts:
-            self.push_fact(f)
+            self.push_fact(f.head)
+
+    def push_program(self, program):
+        self.push_rules(program.rules)
+        self.push_facts(program.facts)
 
     def get_facts(self):
         return self.fact_index.get_all_facts()

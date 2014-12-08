@@ -14,13 +14,19 @@ class Program(object):
     def add_fact(self, fact):
         self.facts.append(fact)
 
+    def merge(self, program):
+        for f in program.facts:
+            self.add_fact(f)
+        for r in program.rules:
+            self.add_rule(r)
+
     def hash(self):
         return hash(str(self))
 
     def __str__(self):
         rules = "\n".join([str(rule) for rule in self.rules])
         facts = "\n".join([str(fact) for fact in self.facts])
-        return rules + facts
+        return rules + "\n" + facts
 
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__
