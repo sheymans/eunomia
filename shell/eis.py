@@ -9,7 +9,7 @@ class Eis(cmd.Cmd):
     """Eunomia Interactive Shell -- EIS"""
 
     prompt = "(eis) "
-    intro = "Eis Interactive Shell - (C) Stijn Heymans, 2014\nType 'help' for an overview of commands. Ctrl-D exits."
+    intro = "Eunomia Interactive Shell - (C) Stijn Heymans, 2014\nType 'help' for an overview of commands. Ctrl-D exits."
 
     # Store the current Program
     program = None

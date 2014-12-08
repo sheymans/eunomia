@@ -53,25 +53,25 @@ class TestEngine(unittest.TestCase):
 
         engine.push_fact(fact2)
         results = engine.get_facts()
-        self.assertEqual(results[0], Atom(Term("edge"), [ Term("c"), Term("d")]))
-        self.assertEqual(results[1], Atom(Term("edge"), [ Term("a"), Term("b")]))
-        self.assertEqual(results[2], Atom(Term("path"), [ Term("a"), Term("b")]))
-        self.assertEqual(results[3], Atom(Term("path"), [ Term("c"), Term("d")]))
+        self.assertEqual(set(map(lambda x: str(x), results)), set(map(lambda x: str(x), [Atom(Term("edge"), [ Term("c"), Term("d")]), Atom(Term("edge"), [ Term("a"), Term("b")]), Atom(Term("path"), [ Term("a"), Term("b")]), Atom(Term("path"), [ Term("c"), Term("d")])])))
 
         # finally transitivity
         fact3 = Atom(Term("edge"), [ Term("b"), Term("c")])
         engine.push_fact(fact3)
         results = engine.get_facts()
 
-        self.assertEqual(results[0], Atom(Term("path"), [ Term("c"), Term("d")]))
-        self.assertEqual(results[1], Atom(Term("edge"), [ Term("a"), Term("b")]))
-        self.assertEqual(results[2], Atom(Term("edge"), [ Term("b"), Term("c")]))
-        self.assertEqual(results[3], Atom(Term("path"), [ Term("b"), Term("c")]))
-        self.assertEqual(results[4], Atom(Term("path"), [ Term("a"), Term("b")]))
-        self.assertEqual(results[5], Atom(Term("path"), [ Term("a"), Term("c")]))
-        self.assertEqual(results[6], Atom(Term("path"), [ Term("b"), Term("d")]))
-        self.assertEqual(results[7], Atom(Term("path"), [ Term("a"), Term("d")]))
-        self.assertEqual(results[8], Atom(Term("edge"), [ Term("c"), Term("d")]))
+        expected = []
+        expected.append(Atom(Term("path"), [ Term("c"), Term("d")]))
+        expected.append(Atom(Term("edge"), [ Term("a"), Term("b")]))
+        expected.append(Atom(Term("edge"), [ Term("b"), Term("c")]))
+        expected.append(Atom(Term("path"), [ Term("b"), Term("c")]))
+        expected.append(Atom(Term("path"), [ Term("a"), Term("b")]))
+        expected.append(Atom(Term("path"), [ Term("a"), Term("c")]))
+        expected.append(Atom(Term("path"), [ Term("b"), Term("d")]))
+        expected.append(Atom(Term("path"), [ Term("a"), Term("d")]))
+        expected.append(Atom(Term("edge"), [ Term("c"), Term("d")]))
+
+        self.assertEqual(set(map(lambda x: str(x), results)), set(map(lambda x: str(x), expected)))
 
 
 
