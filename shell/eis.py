@@ -94,6 +94,36 @@ class Eis(cmd.Cmd):
         else:
             print "I don't know what to add. Add a rule or fact."
 
+
+    ## Doing queries
+
+    def do_query(self, what):
+        """query [atom]
+        \nFor example 'query f(?x,b).' 
+        """
+        if what:
+            try:
+                p = Parser()
+                new_program = p.parse(what)
+                if len(new_program.facts) > 0:
+                    atom = new_program.facts[0].head
+                
+                # this pushes both facts and rules
+                if atom and self.engine:
+                    with self.time:
+                        facts = self.engine.get_matching_facts(atom)
+                        for f in facts:
+                            print f
+                        print "==> ", len(facts), "facts match query ", atom
+                else:
+                    print "Do an actual query and do a build first."
+ 
+            except Exception as e:
+                print "I'm not able to query ", what, " Is it well-formed? ",  e
+        else:
+            print "I don't know what to query."
+
+
     ## Inferring all you can:
 
     def do_build(self, line):

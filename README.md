@@ -24,55 +24,54 @@ you find bugs, please submit an issue.
 # Example Run
 
 ```
-/eunomia$ python -m shell.eis
-
-Eis Interactive Shell - (C) Stijn Heymans, 2014
+eunomia$ python -m shell.eis
+Eunomia Interactive Shell - (C) Stijn Heymans, 2014
 Type 'help' for an overview of commands. Ctrl-D exits.
 
 (eis) load examples/path.lp
 ==> program loaded.
 
-:: (command executed in 7.853031 ms)
+:: (command executed in 8.091927 ms)
 
 (eis) show loaded
 path(?x, ?y) :- edge(?x, ?y).
 path(?x, ?z) :- edge(?x, ?y), path(?y, ?z).
 
 (eis) add edge(a, b).
-==> added  edge(a, b).  and updated known inferences.
+==> added  
+edge(a, b).  and updated known inferences.
 
-(eis) show loaded
-path(?x, ?y) :- edge(?x, ?y).
-path(?x, ?z) :- edge(?x, ?y), path(?y, ?z).
-edge(a, b).
+(eis) show inferences
+You did not ask to deduce what I know. Try 'build'.
 
 (eis) build
 Building model...
 ==> Model built (do 'show inferences' to see all known facts)
 
-:: (command executed in 0.558138 ms)
+:: (command executed in 0.565052 ms)
 
 (eis) show inferences
 path(a, b)
 edge(a, b)
 ==>  2 facts currently known.
 
-(eis) add edge(b, c)
-I'm not able to add  edge(b, c)  Is it a well-formed fact or rule?
-Details:  Syntax error in input: None
-
-(eis) add edge(b, c).
-
-:: (command executed in 0.552177 ms)
-==> added  edge(b, c).  and updated known inferences.
-
-(eis) show inferences
-edge(b, c)
-path(a, c)
-edge(a, b)
+(eis) query path(a, ?x).
 path(a, b)
-path(b, c)
-==>  5 facts currently known.
-(eis) 
+==>  1 facts match query  path(a, ?x)
+
+:: (command executed in 0.092983 ms)
+
+(eis) add edge(b, b).
+
+:: (command executed in 0.483990 ms)
+==> added  
+edge(b, b).  and updated known inferences.
+
+(eis) query path(?x, ?x).
+path(b, b)
+==>  1 facts match query  path(?x, ?x)
+
+:: (command executed in 0.113010 ms)
+
 ```
 

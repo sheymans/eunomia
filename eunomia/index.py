@@ -237,6 +237,24 @@ class FactIndex(object):
         """
         return self.index.get_all_values()
 
+    def get_matching_facts(self, atom):
+        """
+        Get all facts that match the atom (answer the query).
+        """
+        candidates = self.index.get_more_specific_matches(atom)
+
+        # now only retain those candidates that actually unify (the indexes do
+        # not distinguish between equal variables)
+
+        facts = []
+        for cand in candidates:
+            mapping = atom.unify_with_ground(cand)
+            if mapping is not False:
+                new_fact = atom.resolve(mapping)
+                facts.append(new_fact)
+        return facts
+
+
 
     ## Built-ins
     def __str__(self):

@@ -64,6 +64,9 @@ class Engine(object):
 
     def get_facts(self):
         return self.fact_index.get_all_facts()
+
+    def get_matching_facts(self, atom):
+        return self.fact_index.get_matching_facts(atom)
             
     # Private
 
