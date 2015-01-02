@@ -194,6 +194,25 @@ class TestIndex(unittest.TestCase):
         str(ind)
 
 
+    def test_find_no_args(self):
+        ind = AtomIndex()
+        at = Atom(Term("p"), [Term("a"), Term("?x", True)])
+        ind.add(at, "random")
+        self.assertEqual([], ind._AtomIndex__find(ind.index[at.predicate.value], []))
+        self.assertEqual([], ind._AtomIndex__find_more_specific(ind.index[at.predicate.value], []))
+
+    def test_print_rule_index(self):
+        at = Atom(Term("p"), [Term("a"), Term("?x", True)])
+        at2 = Atom(Term("p"), [Term("a"), Term("b", False)])
+        at3 = Atom(Term("q"), [Term("a"), Term("c", False)])
+
+        rule = Rule(at, [at2, at3])
+
+        ind = RuleIndex()
+        ind.add_rule(rule)
+
+        # no test, just making sure this works
+        str(ind) 
 
 
 

@@ -173,6 +173,45 @@ class TestModels(unittest.TestCase):
         self.assertEqual(var2.resolve(mapping), var2)
 
 
+    def test_merge(self):
+        predicate1 = Term("p")
+        constant1 = Term("a")
+        var1 = Term("?x", True)
+        atom1 = Atom(predicate1, [ constant1, var1 ])
+
+        predicate2 = Term("q")
+        constant2 = Term("b")
+        var2 = Term("?y", True)
+        atom2 = Atom(predicate2, [ constant2, var2 ])
+
+        head = Atom(predicate1, [ constant1 ])
+
+        rule1 = Rule(head, [atom1, atom2])
+        rule2 = Rule(head, [atom1])
+        fact = Rule(head, [])
+
+        program = Program()
+        program.add_rule(rule1)
+        program.add_rule(rule2)
+        program.add_rule(fact)
+
+        self.assertEqual(str(program), "p(a) :- p(a, ?x), q(b, ?y).\np(a) :- p(a, ?x).\np(a).\n")
+
+        # now program with just a fact:
+        predicate3 = Term("r")
+        constant3 = Term("a")
+        at3 = Atom(predicate3, [ constant3 ])
+        fact2 = Rule(at3, [])
+
+        program2 = Program()
+        program2.add_rule(fact2)
+        # let's also add the fact as a fact (we'll have it double)
+        program2.add_fact(fact2)
+
+        self.assertEqual(str(program2), "r(a).\nr(a).")
+
+        program.merge(program2)
+        self.assertEqual(str(program), "p(a) :- p(a, ?x), q(b, ?y).\np(a) :- p(a, ?x).\np(a).\nr(a).\nr(a).")
 
 
 

@@ -75,6 +75,17 @@ class TestEngine(unittest.TestCase):
 
         self.assertEqual(set(map(lambda x: str(x), results)), set(map(lambda x: str(x), expected)))
 
+    def test_ex_20150102(self):
+        program = eunomia.utils.load_program('examples/ex_20150102.lp')
+        engine = Engine(program)
+        expected = ['r(b)', 'p(b)', 'q(b)', 's(a)', 'r(a)', 's(b)']
+        self.assertEqual(set(map(str, engine.get_facts())), set(expected))
+
+        query = Atom(Term("s"), [ Term("?x", True) ])
+        matching = [ 's(a)', 's(b)'] 
+        self.assertEqual(set(map(str, engine.get_matching_facts(query))), set(matching))
+
+
 
 
 
